@@ -1,6 +1,9 @@
 import streamlit as st
 
-# Inject CSS for agriculture-themed background image
+# 1. Set page config as the very first Streamlit command
+st.set_page_config(page_title="Crop Yield Prediction", layout="centered")
+
+# 2. Inject CSS for background image
 page_bg_img = '''
 <style>
 body {
@@ -10,11 +13,9 @@ background-position: center;
 background-repeat: no-repeat;
 background-attachment: fixed;
 }
-
 .stApp {
     background: transparent;
 }
-
 footer, header, .css-1v3fvcr, .css-1d391kg {
     background: rgba(255, 255, 255, 0.8);
     border-radius: 10px;
@@ -25,10 +26,9 @@ footer, header, .css-1v3fvcr, .css-1d391kg {
 
 st.markdown(page_bg_img, unsafe_allow_html=True)
 
-st.set_page_config(page_title="Crop Yield Prediction", layout="centered")
+# 3. Rest of your UI code
 st.title("🌾 Crop Yield Prediction")
 
-# Expanded dropdown options
 crops = [
     'Wheat', 'Rice', 'Maize', 'Barley', 'Millet', 'Sorghum', 'Soybean', 'Cotton', 'Sugarcane',
     'Groundnut', 'Mustard', 'Sunflower', 'Tea', 'Coffee', 'Potato', 'Tomato', 'Onion', 'Chili',
@@ -47,7 +47,6 @@ states = [
     'Uttarakhand', 'West Bengal', 'Delhi'
 ]
 
-# Input form
 with st.form("crop_form"):
     col1, col2 = st.columns(2)
 
@@ -70,7 +69,6 @@ if submitted:
     if area == 0:
         st.error("Area cannot be zero to calculate yield.")
     else:
-        # Dummy prediction formula (replace with your actual model)
         predicted_yield = (
             (production / area)
             + (rainfall * 0.01)
@@ -79,4 +77,5 @@ if submitted:
             + (crop_year % 100) * 0.4
         )
         st.success(f"🌱 Predicted Yield: {predicted_yield:.2f} tons/ha")
+
 
