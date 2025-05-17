@@ -1,17 +1,20 @@
 import streamlit as st
 import base64
 
+# 1. Set page config at the very top
 st.set_page_config(page_title="Crop Yield Prediction", layout="centered")
 
-def get_base64_of_bin_file(bin_file):
+# 2. Function to read image and encode in base64
+def get_base64(bin_file):
     with open(bin_file, 'rb') as f:
         data = f.read()
     return base64.b64encode(data).decode()
 
-# Change this path if your app.py is not in same folder as the image
+# 3. Path to your local image (update if needed)
 image_path = r"C:\Users\malat\Downloads\bg.jpg"
-image_base64 = get_base64_of_bin_file(image_path)
+image_base64 = get_base64(image_path)
 
+# 4. CSS to set background
 page_bg_img = f'''
 <style>
 [data-testid="stAppViewContainer"] > .main {{
@@ -20,7 +23,7 @@ page_bg_img = f'''
   background-position: center;
   background-repeat: no-repeat;
   background-attachment: fixed;
-  min-height: 100vh;
+  height: 100vh;
 }}
 
 [data-testid="stAppViewContainer"] {{
@@ -34,12 +37,13 @@ page_bg_img = f'''
 }}
 </style>
 '''
-
+# Inject CSS with markdown
 st.markdown(page_bg_img, unsafe_allow_html=True)
 
+# 5. Title
 st.title("🌾 Crop Yield Prediction")
 
-# Your form and other code here — same as before
+# 6. Dropdown options expanded
 crops = [
     'Wheat', 'Rice', 'Maize', 'Barley', 'Millet', 'Sorghum', 'Soybean', 'Cotton', 'Sugarcane',
     'Groundnut', 'Mustard', 'Sunflower', 'Tea', 'Coffee', 'Potato', 'Tomato', 'Onion', 'Chili',
@@ -58,6 +62,7 @@ states = [
     'Uttarakhand', 'West Bengal', 'Delhi'
 ]
 
+# 7. Input form
 with st.form("crop_form"):
     col1, col2 = st.columns(2)
 
@@ -76,6 +81,7 @@ with st.form("crop_form"):
 
     submitted = st.form_submit_button("Predict")
 
+# 8. Prediction logic
 if submitted:
     if area == 0:
         st.error("Area cannot be zero to calculate yield.")
@@ -88,6 +94,7 @@ if submitted:
             + (crop_year % 100) * 0.4
         )
         st.success(f"🌱 Predicted Yield: {predicted_yield:.2f} tons/ha")
+
 
 
 
