@@ -1,5 +1,30 @@
 import streamlit as st
 
+# Inject CSS for agriculture-themed background image
+page_bg_img = '''
+<style>
+body {
+background-image: url("https://www.google.com/url?sa=i&url=https%3A%2F%2Ffsii.in%2Fmonoculture-farming%2F&psig=AOvVaw3kn1RHoNiocjZHHXgZm8aH&ust=1747588838129000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCKi4o_WBq40DFQAAAAAdAAAAABAE");
+background-size: cover;
+background-position: center;
+background-repeat: no-repeat;
+background-attachment: fixed;
+}
+
+.stApp {
+    background: transparent;
+}
+
+footer, header, .css-1v3fvcr, .css-1d391kg {
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 10px;
+    padding: 10px;
+}
+</style>
+'''
+
+st.markdown(page_bg_img, unsafe_allow_html=True)
+
 st.set_page_config(page_title="Crop Yield Prediction", layout="centered")
 st.title("🌾 Crop Yield Prediction")
 
