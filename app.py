@@ -2,11 +2,11 @@ import streamlit as st
 
 st.set_page_config(page_title="Crop Yield Prediction", layout="centered")
 
-# Improved background CSS
+# Use your specific image URL as background
 page_bg_img = '''
 <style>
 [data-testid="stAppViewContainer"] > .main {
-  background-image: url("https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1350&q=80");
+  background-image: url("https://fsii.in/wp-content/uploads/2023/04/Monoculture-Farming-Types-Examples-Advantages-and-Disadvantages.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -19,7 +19,7 @@ page_bg_img = '''
 }
 
 [data-testid="stHeader"], [data-testid="stToolbar"], footer {
-  background: rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.85);
   border-radius: 10px;
   padding: 8px;
 }
@@ -78,6 +78,7 @@ if submitted:
             + (crop_year % 100) * 0.4
         )
         st.success(f"🌱 Predicted Yield: {predicted_yield:.2f} tons/ha")
+
 
 
 
