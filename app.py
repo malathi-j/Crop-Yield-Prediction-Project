@@ -1,32 +1,33 @@
 import streamlit as st
 
-# 1. Set page config as the very first Streamlit command
 st.set_page_config(page_title="Crop Yield Prediction", layout="centered")
 
-# 2. Inject CSS for background image
+# Improved background CSS
 page_bg_img = '''
 <style>
-body {
-background-image: url("https://www.google.com/url?sa=i&url=https%3A%2F%2Ffsii.in%2Fmonoculture-farming%2F&psig=AOvVaw3kn1RHoNiocjZHHXgZm8aH&ust=1747588838129000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCKi4o_WBq40DFQAAAAAdAAAAABAE");
-background-size: cover;
-background-position: center;
-background-repeat: no-repeat;
-background-attachment: fixed;
+[data-testid="stAppViewContainer"] > .main {
+  background-image: url("https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1350&q=80");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  min-height: 100vh;
 }
-.stApp {
-    background: transparent;
+
+[data-testid="stAppViewContainer"] {
+  background: transparent;
 }
-footer, header, .css-1v3fvcr, .css-1d391kg {
-    background: rgba(255, 255, 255, 0.8);
-    border-radius: 10px;
-    padding: 10px;
+
+[data-testid="stHeader"], [data-testid="stToolbar"], footer {
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 10px;
+  padding: 8px;
 }
 </style>
 '''
 
 st.markdown(page_bg_img, unsafe_allow_html=True)
 
-# 3. Rest of your UI code
 st.title("🌾 Crop Yield Prediction")
 
 crops = [
@@ -77,5 +78,6 @@ if submitted:
             + (crop_year % 100) * 0.4
         )
         st.success(f"🌱 Predicted Yield: {predicted_yield:.2f} tons/ha")
+
 
 
