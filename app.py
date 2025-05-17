@@ -1,59 +1,44 @@
 import streamlit as st
-import pandas as pd
-import numpy as np
-import joblib
 
-# Load model and encoders
-try:
-    model = joblib.load("crop_yield_model.pkl")
-    encoders = joblib.load("label_encoders.pkl")
-except FileNotFoundError as e:
-    st.error("❌ Model or encoders not found. Please ensure 'crop_yield_model.pkl' and 'label_encoders.pkl' are in the same directory.")
-    st.stop()
+# Set page title
+st.set_page_config(page_title="Crop Yield Prediction", layout="centered")
 
-st.title("🌾 Crop Yield Prediction App")
-st.write("This app predicts crop yield (in tons/hectare) based on environmental and agricultural parameters.")
+st.title("🌾 Crop Yield Prediction")
+
+# Sample dropdown data
+crops = ['Wheat', 'Rice', 'Maize', 'Barley']
+seasons = ['Summer', 'Winter', 'Monsoon']
+states = ['Karnataka', 'Maharashtra', 'Punjab', 'Tamil Nadu']
 
 # Input form
-with st.form("yield_form"):
-    crop = st.text_input("Crop (e.g., Rice, Maize)")
-    crop_year = st.number_input("Crop Year", min_value=1990, max_value=2100, value=2024)
-    season = st.text_input("Season (e.g., Kharif, Rabi, Whole Year)")
-    state = st.text_input("State (e.g., Karnataka, Punjab)")
-    area = st.number_input("Area (hectares)", min_value=0.0, value=1.0)
-    production = st.number_input("Production (tons)", min_value=0.0, value=1.0)
-    rainfall = st.number_input("Annual Rainfall (mm)", min_value=0.0, value=800.0)
-    fertilizer = st.number_input("Fertilizer Used (kg/ha)", min_value=0.0, value=50.0)
-    pesticide = st.number_input("Pesticide Used (kg/ha)", min_value=0.0, value=5.0)
+with st.form("crop_form"):
+    col1, col2 = st.columns(2)
+    with col1:
+        crop = st.selectbox("Select Crop:", crops)
+        crop_year = st.number_input("Enter Crop Year:", min_value=1900, max_value=2100, value=2025)
+        season = st.selectbox("Select Season:", seasons)
+        state = st.selectbox("Select State:", states)
+        area = st.number_input("Enter Area (ha):", min_value=0.0, step=0.1)
+    with col2:
+        production = st.number_input("Enter Production (tons):", min_value=0.0, step=0.1)
+        rainfall = st.number_input("Enter Annual Rainfall (mm):", min_value=0.0, step=0.1)
+        fertilizer = st.number_input("Enter Fertilizer Used (kg):", min_value=0.0, step=0.1)
+        pesticide = st.number_input("Enter Pesticide Used (kg):", min_value=0.0, step=0.1)
 
-    submit = st.form_submit_button("Predict Yield")
+    submitted = st.form_submit_button("Predict")
 
-if submit:
-    try:
-        # Encode categorical inputs
-        crop_encoded = encoders['Crop'].transform([crop])[0]
-        season_encoded = encoders['Season'].transform([season])[0]
-        state_encoded = encoders['State'].transform([state])[0]
+# Prediction logic
+if submitted:
+    if area == 0:
+        st.error("Area cannot be zero to calculate yield.")
+    else:
+        # Dummy prediction formula (replace with actual model prediction)
+        predicted_yield = (
+            (production / area)
+            + (rainfall * 0.01)
+            + (fertilizer * 0.2)
+            + (pesticide * 0.1)
+            + (crop_year % 100) * 0.4
+        )
 
-        # Build input vector
-        input_data = pd.DataFrame([[
-            crop_encoded,
-            crop_year,
-            season_encoded,
-            state_encoded,
-            area,
-            production,
-            rainfall,
-            fertilizer,
-            pesticide
-        ]], columns=['Crop', 'Crop_Year', 'Season', 'State', 'Area', 'Production',
-                     'Annual_Rainfall', 'Fertilizer', 'Pesticide'])
-
-        # Predict
-        prediction = model.predict(input_data)[0]
-        st.success(f"🌾 Estimated Crop Yield: **{prediction:.2f} tons/hectare**")
-
-    except ValueError as ve:
-        st.error(f"❌ Value Error: {ve}")
-    except Exception as e:
-        st.error(f"⚠️ An unexpected error occurred: {e}")
+        st.success(f"🌱 Predicted Yield: {predicted_yield:.2f} tons/ha")
